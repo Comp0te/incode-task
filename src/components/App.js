@@ -4,23 +4,32 @@ import ClientList from './ClientList';
 import DetailedClient from './DetailedClient';
 import SearchClient from './SearchClient';
 import { loadClients } from '../AC';
-import defaultClients from '../defaultClients';
-
+import PropTypes from 'prop-types'
 class App extends Component {
+  static propTypes = {
+    loadClients: PropTypes.func,
+    clients: PropTypes.shape({
+      clientsData: PropTypes.array,
+      activeClient: PropTypes.number
+    }),
+  }
+
   componentDidMount() {
     this.props.loadClients();
   }
 
   render() {
-    console.log("----", this.props.clients)
+    const { activeClient, clientsData } = this.props.clients;
+
     return (
       <article className='ui grid container'>
         <nav className='ui six wide column segment'>
           <SearchClient />
-          <ClientList clients={this.props.clients}  />
+          <ClientList clients={this.props.clients} />
         </nav>
         <article className='ui ten wide column segment'>
-          <DetailedClient client={defaultClients[0]}/>
+          <DetailedClient client={clientsData[activeClient]}
+            activeClient={activeClient} />
         </article>
       </article>
     );
@@ -28,7 +37,6 @@ class App extends Component {
 }
 
 const mapStateToProps = (state) => {
-  console.log("dfsfsdf", state)
   return {
     clients: state.clients
   }
