@@ -1,14 +1,25 @@
 import React, { Component } from 'react';
 import Client from './Client';
-
+import {connect} from 'react-redux';
+import {selectClient} from '../AC'
+import PropTypes from 'prop-types'
 class ClientList extends Component {
+  static propTypes = {
+    clients: PropTypes.shape({
+      clientsData: PropTypes.array,
+      activeClient: PropTypes.number
+    }),
+    handleClick: PropTypes.func
+  }
+
   render() {
-    const { clients } = this.props
-    console.log("====", this.props)
-    const clientElements = clients.map(
+    const { clientsData, activeClient } = this.props.clients
+    const clientElements = clientsData.map(
       (client, index) => <Client key={index}
         client={client}
-        activeClient={this.props.activeClient} />
+        selectClient = {this.handleClick(index)}
+        resetSelectionClient = {this.handleClick(null)}
+        isClientActive={activeClient === index} />
     )
 
     return (
@@ -17,6 +28,18 @@ class ClientList extends Component {
       </ul>
     );
   }
+
+  handleClick(index) {
+    return () => this.props.handleClick(index)
+  }
 }
 
-export default ClientList;
+const mapDispatchToProps = (dispatch) => (
+  {
+    handleClick: (index) => {
+      dispatch(selectClient(index))
+    },
+  }
+);
+
+export default connect(null, mapDispatchToProps)(ClientList);
