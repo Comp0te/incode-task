@@ -1,20 +1,28 @@
-import React, { Component } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types'
 
+export default function DetailedClient(props) {
+  const { activeClient } = props;
 
-class DetailedClient extends Component {
-  render() {
+  if (activeClient === null) {
     return (
-      <div className='ui two column grid'>
-        {this.getGeneral()}
-        {this.getContact()}
-        {this.getAddress()}
-      </div>
+      <p className='ui centered header'>
+        To get information, select the client on the left.
+        </p>
     )
   }
 
-  getGeneral() {
-    const { firstName, lastName, avatar } = this.props.client.general
-    const { title, company } = this.props.client.job
+  return (
+    <div className='ui two column grid'>
+      {getGeneral()}
+      {getContact()}
+      {getAddress()}
+    </div>
+  )
+
+  function getGeneral() {
+    const { firstName, lastName, avatar } = props.client.general
+    const { title, company } = props.client.job
 
     return (
       <section className='row'>
@@ -23,27 +31,27 @@ class DetailedClient extends Component {
             src={avatar}
             width='128'
             height='128'
-            alt = 'Client avatar'/>
+            alt='Client avatar' />
         </div>
         <div className='eleven wide column'>
           <h1 className='ui header'>
             {firstName} {lastName}
           </h1>
-          <h2 className='ui header'>
+          <h3 className='ui header'>
             {title} - {company}
-          </h2>
+          </h3>
         </div>
       </section>
     );
   }
 
-  getContact() {
-    const { email, phone } = this.props.client.contact
+  function getContact() {
+    const { email, phone } = props.client.contact
 
     return (
       <section className='row'>
         <div className='eleven wide right floated column'>
-          <h2 className='ui header'>Contact</h2>
+          <h3 className='ui header'>Contact</h3>
           <ul className='ui list'>
             <li>Email - {email}</li>
             <li>Phone - {phone}</li>
@@ -53,13 +61,13 @@ class DetailedClient extends Component {
     )
   }
 
-  getAddress() {
-    const { zipCode, country, city, street } = this.props.client.address
+  function getAddress() {
+    const { zipCode, country, city, street } = props.client.address
 
     return (
       <section className='row'>
         <div className='eleven wide right floated column'>
-          <h2 className='ui header'>Address</h2>
+          <h3 className='ui header'>Address</h3>
           <p>{zipCode}, {country}, {city}, {street}.</p>
         </div>
       </section>
@@ -67,4 +75,15 @@ class DetailedClient extends Component {
   }
 }
 
-export default DetailedClient;
+DetailedClient.propTypes = {
+  client: PropTypes.objectOf(PropTypes.objectOf(PropTypes.string))
+}
+
+DetailedClient.defaultProps = {
+  client: {
+    general: {},
+    job: {},
+    contact: {},
+    address: {},
+  }
+}
