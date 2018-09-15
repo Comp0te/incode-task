@@ -1,1 +1,2 @@
 export const LOAD_ALL_CLIENTS = 'LOAD_ALL_CLIENTS';
+export const SELECT_CLIENT = 'SELECT_CLIENT';
