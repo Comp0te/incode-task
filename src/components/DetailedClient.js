@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 
+
 class DetailedClient extends Component {
   render() {
     return (
@@ -12,17 +13,17 @@ class DetailedClient extends Component {
   }
 
   getGeneral() {
-    const { firstName, lastName, avatar } = this.props.general
-    const { title, company } = this.props.job
+    const { firstName, lastName, avatar } = this.props.client.general
+    const { title, company } = this.props.client.job
 
     return (
       <section className='row'>
         <div className='five wide column'>
-          <img className='ui circular image'
+          <img className='ui circular image centered'
             src={avatar}
             width='128'
             height='128'
-            alt='Client photo' />
+            alt = 'Client avatar'/>
         </div>
         <div className='eleven wide column'>
           <h1 className='ui header'>
@@ -37,7 +38,7 @@ class DetailedClient extends Component {
   }
 
   getContact() {
-    const { email, phone } = this.props.contact
+    const { email, phone } = this.props.client.contact
 
     return (
       <section className='row'>
@@ -53,7 +54,7 @@ class DetailedClient extends Component {
   }
 
   getAddress() {
-    const { zipCode, country, city, street } = this.props.address
+    const { zipCode, country, city, street } = this.props.client.address
 
     return (
       <section className='row'>
