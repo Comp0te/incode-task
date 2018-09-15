@@ -1,34 +1,32 @@
-import React, { Component } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types'
 
-class Client extends Component {
-  render() {
-    const { avatar, firstName, lastName } = this.props.client.general;
-    const { title } = this.props.client.job;
-    // const { activeClient } = this.props.activeClient;
+export default function Client(props) {
+  const { avatar, firstName, lastName } = props.client.general;
+  const { title } = props.client.job;
+  const { isClientActive, selectClient, resetSelectionClient } = props;
 
-    // if (activeClient) return (
-    //   <li className="active item">
-    //     {this.getBody()}
-    //   </li>
-    // )
-
-    return (
-      <li className="item">
-        <img
-          className="ui avatar image"
-          src={avatar}
-          alt='Client avatar'
-        />
-        <div className="content">
-          <b className="header">
-            {`${firstName} ${lastName}`}
-          </b>
-          {title}
-        </div>
-      </li>
-    );
-  }
-
+  return (
+    <li className={isClientActive ? 'active item' : 'item'}
+      onClick={!isClientActive ? selectClient : resetSelectionClient}>
+      <img
+        className='ui avatar image'
+        src={avatar}
+        alt='Client avatar'
+      />
+      <div className='content'>
+        <b className='header'>
+          {firstName} {lastName}
+        </b>
+        {title}
+      </div>
+    </li>
+  );
 }
 
-export default Client;
+Client.protoType = {
+  client: PropTypes.objectOf(PropTypes.objectOf(PropTypes.string)),
+  isClientActive: PropTypes.bool,
+  selectClient: PropTypes.func,
+  resetSelectionClient: PropTypes.func
+}
