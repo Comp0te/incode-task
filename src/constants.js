@@ -1,0 +1,1 @@
+export const LOAD_ALL_CLIENTS = 'LOAD_ALL_CLIENTS';
