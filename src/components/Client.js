@@ -2,6 +2,14 @@ import React, { Component } from 'react';
 
 class Client extends Component {
   render() {
+    const { activeClient } = this.props.activeClient;
+
+    if (activeClient) return (
+      <li className="active item">
+        {this.getBody()}
+      </li>
+    )
+
     return (
       <li className="item">
         {this.getBody()}
@@ -10,8 +18,8 @@ class Client extends Component {
   }
 
   getBody() {
-    const { avatar, firstName, lastName } = this.props.general;
-    const { title } = this.props.job;
+    const { avatar, firstName, lastName } = this.props.client.general;
+    const { title } = this.props.client.job;
     return (
       <img
         className="ui avatar image"
