@@ -1,4 +1,4 @@
-[
+const defaultClients = [
   {
     "general": {
       "firstName": "Liana",
@@ -441,3 +441,5 @@
     }
   }
 ]
+
+export default defaultClients
