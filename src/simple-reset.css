@@ -1,0 +1,7 @@
+nav.segment {
+  margin-bottom: 0 !important;
+}
+
+li.item::before {
+  content: "" !important;
+}
