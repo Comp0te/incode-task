@@ -1,8 +1,8 @@
-import { LOAD_ALL_CLIENTS, SELECT_CLIENT } from '../constants'
+import { LOAD_ALL_CLIENTS, SELECT_CLIENT, FILTER_CLIENTS } from '../constants'
 
 const defaultClientsState = {
   clientsData: [],
-  activeClient: null
+  activeClient: null,
 }
 
 export default (clientsState = defaultClientsState, action) => {
@@ -20,6 +20,13 @@ export default (clientsState = defaultClientsState, action) => {
       return {
         ...clientsState,
         activeClient: payload
+      }
+    }
+
+    case FILTER_CLIENTS: {
+      return {
+        ...clientsState,
+        activeClient: null,
       }
     }
 
