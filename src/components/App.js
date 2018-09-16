@@ -5,6 +5,8 @@ import DetailedClient from './DetailedClient';
 import SearchClient from './SearchClient';
 import { loadClients } from '../AC';
 import PropTypes from 'prop-types'
+import { filter } from '../helper';
+
 class App extends Component {
   static propTypes = {
     loadClients: PropTypes.func,
@@ -12,6 +14,7 @@ class App extends Component {
       clientsData: PropTypes.array,
       activeClient: PropTypes.number
     }),
+    searchQuery: PropTypes.string
   }
 
   componentDidMount() {
@@ -20,15 +23,21 @@ class App extends Component {
 
   render() {
     const { activeClient, clientsData } = this.props.clients;
-
+    const { searchQuery } = this.props;
+    const filteredClientsData = clientsData.filter(filter(searchQuery))
+    console.log(filteredClientsData)
     return (
       <article className='ui grid container'>
         <nav className='ui six wide column segment'>
           <SearchClient />
-          <ClientList clients={this.props.clients} />
+          <ClientList clientsData={searchQuery !== '' ?
+            filteredClientsData :
+            clientsData} />
         </nav>
         <article className='ui ten wide column segment'>
-          <DetailedClient client={clientsData[activeClient]}
+          <DetailedClient client={searchQuery !== '' ?
+            filteredClientsData[activeClient] :
+            clientsData[activeClient]}
             activeClient={activeClient} />
         </article>
       </article>
@@ -38,7 +47,8 @@ class App extends Component {
 
 const mapStateToProps = (state) => {
   return {
-    clients: state.clients
+    clients: state.clients,
+    searchQuery: state.filter.searchQuery
   }
 }
 

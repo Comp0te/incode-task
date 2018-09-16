@@ -21,16 +21,9 @@ class SearchClient extends Component {
 
   onSearch = (evt) => {
     const searchValue = evt.target.value.toLowerCase().trim();
-    console.log('---------', searchValue)
     this.props.filterClients(searchValue)
   }
 }
-
-// const mapStateToProps = (state) => {
-//   return {
-//     data: state.clients.clientsData
-//   }
-// }
 
 const mapDispatchToProps = (dispatch) => (
   {
