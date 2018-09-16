@@ -2,13 +2,21 @@ import React from 'react';
 import PropTypes from 'prop-types'
 
 export default function DetailedClient(props) {
-  const { activeClient } = props;
+  const { activeClient, errorLoadMessage } = props;
 
   if (activeClient === null) {
     return (
       <p className='ui centered header'>
         To get information, select the client on the left.
-        </p>
+      </p>
+    )
+  } else if (errorLoadMessage !== '') {
+    return (
+      <p className='ui centered header'>
+        There was an error loading the file:
+        {errorLoadMessage}
+        Try reloading the page.
+      </p>
     )
   }
 
@@ -76,7 +84,9 @@ export default function DetailedClient(props) {
 }
 
 DetailedClient.propTypes = {
-  client: PropTypes.objectOf(PropTypes.objectOf(PropTypes.string))
+  client: PropTypes.objectOf(PropTypes.objectOf(PropTypes.string)),
+  errorLoadMessage: PropTypes.string,
+  activeClient: PropTypes.number
 }
 
 DetailedClient.defaultProps = {

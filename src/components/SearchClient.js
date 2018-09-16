@@ -1,15 +1,22 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { filterClients } from '../AC'
+import { filterClients } from '../AC';
+import PropTypes from 'prop-types';
 
 class SearchClient extends Component {
+  static propTypes = {
+    filterClients: PropTypes.func,
+    isLoading: PropTypes.bool
+  }
+
   render() {
+    const {isLoading} = this.props
 
     return (
       <div>
         <label className='ui header'
           htmlFor='search'>Search client </label>
-        <div className="ui icon input loading">
+        <div className={isLoading ? "ui icon input loading" : "ui icon input"}>
           <input type="search" id="search"
             placeholder="Enter search query..."
             onChange={this.onSearch} />

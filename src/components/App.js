@@ -4,7 +4,7 @@ import ClientList from './ClientList';
 import DetailedClient from './DetailedClient';
 import SearchClient from './SearchClient';
 import { loadClients } from '../AC';
-import PropTypes from 'prop-types'
+import PropTypes from 'prop-types';
 import { filter } from '../helper';
 
 class App extends Component {
@@ -12,33 +12,41 @@ class App extends Component {
     loadClients: PropTypes.func,
     clients: PropTypes.shape({
       clientsData: PropTypes.array,
-      activeClient: PropTypes.number
+      activeClient: PropTypes.number,
+      loading: PropTypes.bool,
+      loaded: PropTypes.bool,
+      errorLoadMessage: PropTypes.string
     }),
     searchQuery: PropTypes.string
   }
 
   componentDidMount() {
-    this.props.loadClients();
+    const { loading, loaded } = this.props.clients
+    if (!loaded && !loading) {
+      this.props.loadClients('/src/clients');
+    }
   }
 
   render() {
-    const { activeClient, clientsData } = this.props.clients;
+    const { activeClient, clientsData, loading, errorLoadMessage } = this.props.clients;
     const { searchQuery } = this.props;
     const filteredClientsData = clientsData.filter(filter(searchQuery))
-    console.log(filteredClientsData)
+
     return (
       <article className='ui grid container'>
         <nav className='ui six wide column segment'>
-          <SearchClient />
+          <SearchClient isLoading={loading} />
           <ClientList clientsData={searchQuery !== '' ?
             filteredClientsData :
-            clientsData} />
+            clientsData}
+            isLoading={loading} />
         </nav>
         <article className='ui ten wide column segment'>
           <DetailedClient client={searchQuery !== '' ?
             filteredClientsData[activeClient] :
             clientsData[activeClient]}
-            activeClient={activeClient} />
+            activeClient={activeClient}
+            errorLoadMessage = {errorLoadMessage} />
         </article>
       </article>
     );
@@ -54,8 +62,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => (
   {
-    loadClients: () => {
-      dispatch(loadClients())
+    loadClients: (url) => {
+      dispatch(loadClients(url))
     },
   }
 );

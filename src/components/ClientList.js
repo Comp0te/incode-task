@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import Client from './Client';
-import {connect} from 'react-redux';
-import {selectClient} from '../AC';
+import Loader from './Loader';
+import { connect } from 'react-redux';
+import { selectClient } from '../AC';
 import PropTypes from 'prop-types';
 
 class ClientList extends Component {
@@ -9,24 +10,36 @@ class ClientList extends Component {
     clientsData: PropTypes.array,
     activeClient: PropTypes.number,
     handleClick: PropTypes.func,
+    isLoading: PropTypes.bool
   }
 
   render() {
-    const { clientsData, activeClient } = this.props;
-    
-    const clientElements = clientsData.map(
-        (client, index) => <Client key={index}
-          client={client}
-          selectClient = {this.handleClick(index)}
-          resetSelectionClient = {this.handleClick(null)}
-          isClientActive={activeClient === index} />
-      )
+    const { clientsData, activeClient, isLoading } = this.props;
 
-    return (
-      <ul className='ui middle aligned selection list'>
-        {clientElements}
-      </ul>
-    );
+    const clientElements = clientsData.map(
+      (client, index) => <Client key={index}
+        client={client}
+        selectClient={this.handleClick(index)}
+        resetSelectionClient={this.handleClick(null)}
+        isClientActive={activeClient === index} />
+    )
+
+    if (isLoading) {
+      return (
+        <ul className='ui middle aligned selection list'>
+          <li className= 'item'>
+            <Loader />
+          </li>
+        </ul>
+      )
+    } else {
+      return (
+        <ul className='ui middle aligned selection list'>
+          {clientElements}
+        </ul>
+      );
+
+    }
   }
 
   handleClick(index) {
