@@ -2,6 +2,10 @@ nav.segment {
   margin-bottom: 0 !important;
 }
 
+ul.list {
+  margin-left: 0 !important;
+}
+
 li.item::before {
   content: "" !important;
 }
