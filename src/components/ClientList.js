@@ -1,19 +1,22 @@
 import React, { Component } from 'react';
 import Client from './Client';
 import {connect} from 'react-redux';
-import {selectClient} from '../AC'
-import PropTypes from 'prop-types'
+import {selectClient} from '../AC';
+import PropTypes from 'prop-types';
+import {filter} from '../helper';
 class ClientList extends Component {
   static propTypes = {
     clients: PropTypes.shape({
       clientsData: PropTypes.array,
       activeClient: PropTypes.number
     }),
-    handleClick: PropTypes.func
+    handleClick: PropTypes.func,
+    searchQuery: PropTypes.string
   }
 
   render() {
-    const { clientsData, activeClient } = this.props.clients
+    const { clientsData, activeClient } = this.props.clients;
+    const {searchQuery} = this.props;
     const clientElements = clientsData.map(
       (client, index) => <Client key={index}
         client={client}
@@ -22,6 +25,9 @@ class ClientList extends Component {
         isClientActive={activeClient === index} />
     )
 
+    const filteredClientElement = clientsData.filter(filter(searchQuery))
+    console.log(searchQuery)
+    console.log(filteredClientElement)
     return (
       <ul className='ui middle aligned selection list'>
         {clientElements}
@@ -34,6 +40,12 @@ class ClientList extends Component {
   }
 }
 
+const mapStateToProps = (state) => {
+  return {
+    searchQuery: state.filter.searchQuery
+  }
+}
+
 const mapDispatchToProps = (dispatch) => (
   {
     handleClick: (index) => {
@@ -42,4 +54,4 @@ const mapDispatchToProps = (dispatch) => (
   }
 );
 
-export default connect(null, mapDispatchToProps)(ClientList);
+export default connect(mapStateToProps, mapDispatchToProps)(ClientList);
